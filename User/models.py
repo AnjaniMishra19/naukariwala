@@ -53,16 +53,6 @@ class EmployeeData(models.Model):
         db_table="Employee Data"
     def __str__(self, *args, **kwargs):
 
-        if not self.company_identifier:
-            suffix = str(self.id)
-            while True:
-                self.company_identifier = "NWB0000" + suffix
-                try:
-                    super().save(*args, **kwargs)
-                    break
-                except IntegrityError:
-                    suffix = str(int(suffix) + 1)
-
         if not self.candidate_identifier:
             suffix = str(self.id)
             while True:
