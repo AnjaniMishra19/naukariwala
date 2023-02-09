@@ -1,29 +1,29 @@
-from django.db import models, IntegrityError
+from django.db import models
 from django.contrib.auth.models import User
 
-gender = (('0', 'male'), ('1', 'female'),('2','other'))
+sex = (('0', 'male'), ('1', 'female'),('2','other'))
 user_status = (('1', 'active'), ('0', 'delete'),('2','inactive'), ('3','pending'))
 role = (('0','employee'),('1','company'))
 
 # 1. For bussiness Active ,Pending,Inactive,Archive  For Student Active , For businesss Pending
 # 1. add Resume
 
-class EmployeeData(models.Model):
+class CandidateData(models.Model):
     # user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='emp_user')
     id = models.AutoField(primary_key=True,unique=True ,auto_created=True)
-    candidate_identifier = models.CharField(max_length=15, null=True)
+    candidate_identifier = models.CharField(max_length=50, null=True, blank=True)
     first_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(max_length=240, null=True, blank=True)
     phone_no = models.CharField(max_length=10, null=True, blank=True)
-    user_id = models.CharField(max_length=25, null=True, blank=True)
+    user_id = models.CharField(max_length=50, null=True, blank=True)
     verified = models.BooleanField(default=False)
     otp = models.CharField(max_length=6,null=True, blank=True)
     otp_validity = models.CharField(max_length=100,null=True, blank=True)
     password = models.CharField(max_length=1000,null=True, blank=True)
     token = models.CharField(max_length=10000,null=True, blank=True)
     role = models.CharField(choices=role, max_length=10,null=True, blank=True)
-    sex = models.CharField(choices=gender, max_length=10,null=True, blank=True)
+    gender = models.CharField(choices=sex, max_length=10,null=True, blank=True)
 
     address = models.CharField(max_length=200, null=True, blank=True)
     city = models.CharField(max_length=200, null=True, blank=True)
@@ -50,13 +50,12 @@ class EmployeeData(models.Model):
 	
     status = models.CharField(choices=user_status,max_length=40, null=True, blank=True)
     class Meta:
-        db_table="Employee Data"
+        db_table="CandidateData"
     def __str__(self, *args, **kwargs):
-
         if not self.candidate_identifier:
             suffix = str(self.id)
             while True:
-                self.candidate_identifier = "NWC0000" + suffix
+                self.candidate_identifier = "NC0000" + suffix
                 try:
                     super().save(*args, **kwargs)
                     break
@@ -97,12 +96,13 @@ class CompanyData(models.Model):
     status = models.CharField(choices=user_status, max_length=40,null=True, blank=True)
 
     class Meta:
-        db_table="Company Data"
-    def __str__(self, *args, **kwargs):
+        db_table="CompanyData"
+    def __str__(self,*args, **kwargs):
         if not self.company_identifier:
+            print(self.company_identifier,self.id)
             suffix = str(self.id)
             while True:
-                self.company_identifier = "NWB0000" + suffix
+                self.company_identifier = "NB0000" + suffix
                 try:
                     super().save(*args, **kwargs)
                     break

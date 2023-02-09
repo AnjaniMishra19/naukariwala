@@ -6,9 +6,8 @@ from naukriwala.settings import *
 import random
 from User.views import *
 from django.db.models import Q
-from User.models import *
-from functools import wraps
-import jwt
+
+
 def generateOTP(otp_size=6):
     final_otp = ''
 
@@ -24,10 +23,10 @@ def send_otp(phone,user_id):
     date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     ten_minutes_later = datetime.datetime.now() + datetime.timedelta(minutes=10)
     validity = ten_minutes_later.strftime("%Y-%m-%d %H:%M:%S")
-    if EmployeeData.objects.filter(Q(phone_no=phone) | Q(user_id=user_id)).exists():
-        EmployeeData.objects.filter(Q(phone_no=phone) | Q(user_id=user_id)).update(otp=otp, updated_at=date, otp_validity=validity)
+    if CandidateData.objects.filter(Q(phone_no=phone) | Q(user_id=user_id)).exists():
+        CandidateData.objects.filter(Q(phone_no=phone) | Q(user_id=user_id)).update(otp=otp, updated_at=date, otp_validity=validity)
     else:
-        EmployeeData.objects.create(phone_no=phone, user_id=user_id, otp=otp, otp_validity=validity, created_at=date)
+        CandidateData.objects.create(phone_no=phone, user_id=user_id, otp=otp, otp_validity=validity, created_at=date)
 
     url = "https://www.fast2sms.com/dev/bulkV2"
 
@@ -55,8 +54,7 @@ def company_send_otp(phone,company_id, otp):
     validity = ten_minutes_later.strftime("%Y-%m-%d %H:%M:%S")
     if CompanyData.objects.filter(Q(phone_no=phone) | Q(company_id=company_id)).exists():
         CompanyData.objects.filter(Q(phone_no=phone) | Q(company_id=company_id)).update(otp=otp, updated_at=date, otp_validity=validity)
-    else :
-        CompanyData.objects.create(phone_no=phone,company_id=company_id,otp =otp,otp_validity =validity,created_at=date)
+
 
     url = "https://www.fast2sms.com/dev/bulkV2"
 
@@ -94,26 +92,3 @@ def generate_token(user_id,phone):
         traceback.print_exc()
         response = {"status": 'error', "message": f'{str(e)}'}   
         return JsonResponse({"error":response}), 200
-
-
-def company_Access(U):
-    @wraps(U)
-    def wrapper(request,*args, **kwargs):
-        token = request.headers.get('token')
-        #print("AA")
-        # print(token)
-        try:
-            decoded_token = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-            print(decoded_token['user_id'])
-            if decoded_token.get("user_id"):
-                
-                # print(decoded_token.get("user_name"))
-                # print("user Verified")
-                return U(*args, **kwargs)
-            else:
-                response = {"status": 'error', "message": "Unathorized Access"}
-                return JsonResponse(response)
-        except Exception as e:
-            return JsonResponse({"message": "USER AUTHORISATION REQUIRED,Signature Expired", "status": "val_error"}), 401
-
-    return wrapper

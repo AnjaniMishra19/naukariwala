@@ -15,6 +15,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -24,7 +25,8 @@ SECRET_KEY = 'django-insecure-3qu_vd^@3*je86t2#oo5&4^h90m2(gtrxrll)4brqq)%cg14$+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['43.204.115.218']
+
 
 # Application definition
 
@@ -69,28 +71,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'naukriwala.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'sql12594601',
-#         'USER': 'sql12594601',
-#         'PASSWORD': '2fudKjxBj5',
-#         'HOST': 'sql12.freemysqlhosting.net',
-#         'PORT': '3306',
-#     }
-# }
+#serve database
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DATABASES = {  
+    'default': {  
+        "ENGINE": "django.db.backends.mysql",  
+        "NAME": "naukriwala",  
+        "USER": "root",  
+        "PASSWORD": "123@Abc",  
+        "HOST": "65.0.122.41",  
+        "PORT": "3306",  
+        "OPTIONS": {  
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'"  
+        }  
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -110,6 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -121,6 +122,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -131,14 +133,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATIC_URL = '/static/'
-# STATIC_ROOT = 'static'
-STATICFILES_DIRS = (BASE_DIR / 'static',)
 
-MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
+#STATIC_ROOT = 'static'
+STATICFILES_DIRS = (BASE_DIR/'static',)
+
+MEDIA_URL= '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# fast2 sms credentials
+#fast2 sms credentials
 
 CF_ID = '17010dfed6ca368f209de295701071'
 CF_KEY = 'TEST8e18cd8608e5b4a5da1605979b8da848f64dcaa7'
