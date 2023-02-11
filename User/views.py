@@ -30,7 +30,9 @@ def phone_register(request):
                 response = {"status": 200, "message": 'Phone number already exist.'}
             else: 
                 send_otp(phone,user_id)
-                response = {"status":200, "data":phone, "message":"OTP sent to your phone number "+ str(phone)+"."}
+                response = {"status":200, "data":[{"user_id":user_id, "phone":phone}], "message":"OTP sent to your phone number "+ str(phone)+"."}
+
+
 
             # return HttpResponse({"status":"Success", "data":data})
             return JsonResponse(response)
@@ -40,6 +42,8 @@ def phone_register(request):
         response = {"status": 'error', "message": f'{str(e)}'}
         # return HttpResponse({"status":"Success", "data":data})
         return JsonResponse(response)
+
+
 
 
 
