@@ -32,8 +32,6 @@ def phone_register(request):
                 send_otp(phone,user_id)
                 response = {"status":200, "data":[{"user_id":user_id, "phone":phone}], "message":"OTP sent to your phone number "+ str(phone)+"."}
 
-
-
             # return HttpResponse({"status":"Success", "data":data})
             return JsonResponse(response)
             
